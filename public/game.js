@@ -173,15 +173,22 @@ function create() {
   });
 
   cursors = this.input.keyboard.createCursorKeys();
+  keys = this.input.keyboard.addKeys({
+    up: Phaser.Input.Keyboard.KeyCodes.Z,
+    down: Phaser.Input.Keyboard.KeyCodes.S,
+    left: Phaser.Input.Keyboard.KeyCodes.Q,
+    right: Phaser.Input.Keyboard.KeyCodes.D,
+  });
 }
 
 function update() {
   if (player) {
-    if (cursors.left.isDown) {
+    // Si on appuie sur fleche gauche ou sur q
+    if (cursors.left.isDown || keys.left.isDown) {
       player.setVelocityX(-300);
       player.anims.play("left", true);
       direction = "left";
-    } else if (cursors.right.isDown) {
+    } else if (cursors.right.isDown || keys.right.isDown) {
       player.setVelocityX(300);
       player.anims.play("right", true);
       direction = "right";
@@ -191,7 +198,10 @@ function update() {
       direction = "none";
     }
 
-    if (cursors.up.isDown && player.body.touching.down) {
+    if (
+      (cursors.up.isDown || keys.up.isDown || cursors.space.isDown) &&
+      player.body.touching.down
+    ) {
       player.setVelocityY(-550);
     }
 
